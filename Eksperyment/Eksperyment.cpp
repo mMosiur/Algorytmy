@@ -5,20 +5,21 @@ typedef unsigned int uint;
 typedef unsigned short ushort;
 
 struct Scientist {
-	std::string first_name;
-	std::string last_name;
-	ushort sci_val{ 0 };
+	std::string name; // Imiê i nazwisko
+	ushort sci_val = 0; // Zdolnoœæ naukowa
 	Scientist* next = nullptr;
 };
 
 class Group {
 	Scientist* head = nullptr;
 	Scientist* tail = nullptr;
-	ushort size = 0;
-	ushort min_sci_val = 1000;
-	ushort max_sci_val = 0;
-	uint sum_sci_val = 0;
+	ushort size = 0; // Wielkoœæ grupy
+	ushort min_sci_val = 1000; // Minimalna wartoœæ zdolnoœci naukowej w grupie
+	ushort max_sci_val = 0; // Maksymalna wartoœæ zdolnoœci naukowej w grupie
+	uint sum_sci_val = 0; // Suma zdolnoœci naukowych w grupie
 public:
+	
+	// Destruktor
 	~Group() {
 		Scientist* pos = head;
 		while (pos != nullptr) {
@@ -27,16 +28,19 @@ public:
 			delete tmp;
 		}
 	}
-	bool empty() {
-		return size == 0;
-	}
+
+	// Zwraca pierwszego naukowca w grupie
 	Scientist* front() {
 		return head;
 	}
+
+	// Zwraca ostatniego naukowca w grupie
 	Scientist* back() {
 		return tail;
 	}
-	void push(Scientist* scientist) {
+
+	// Dodaje naukowca do grupy
+	void push(Scientist* scientist) { 
 		scientist->next = nullptr;
 		if (size == 0) {
 			head = tail = scientist;
@@ -50,6 +54,8 @@ public:
 		sum_sci_val += scientist->sci_val;
 		size++;
 	}
+
+	// Usuwa naukowca z grupy i go zwraca
 	Scientist* pop() {
 		if (size == 0) return nullptr;
 		Scientist* popped;
@@ -77,53 +83,78 @@ public:
 		size--;
 		return popped;
 	}
-	ushort sci_diff() {
+
+	// Ró¿nica miêdzy najlepszym i najgorszym naukowcem
+	ushort sci_val_diff() {
 		return max_sci_val - min_sci_val;
 	}
-	uint sci_sum() {
+
+	// Suma zdolnoœci naukowych w grupie
+	uint sci_val_sum() {
 		return sum_sci_val;
 	}
+
+	// Wyœwietla osoby w grupie
 	void display() {
 		for (Scientist* pos = head; pos != nullptr; pos = pos->next) {
-			std::cout << pos->first_name << " " << pos->last_name << std::endl;
+			std::cout << pos->name << std::endl;
 		}
 	}
 };
 
 class Table {
-	Group group_1;
-	Group group_2;
-	uint table_size;
-	ushort max_diff;
+	Group group_1; // Grupa pierwsza
+	Group group_2; // Grupa druga
+	uint size; // Iloœæ naukowców przy stole
+	ushort max_diff; // Maksymalna dopuszczalna ró¿nica zdolnoœci naukowych w grupie
 public:
-	Table(uint n, ushort v) : table_size(n), max_diff(v) {
-		for (int i = table_size / 2; i > 0; i--) {
+
+	// Konstruktor
+	Table(uint n, ushort v) : size(n), max_diff(v) {
+		std::string tmp;
+		for (int i = n / 2; i > 0; i--) {
 			Scientist* scientist = new Scientist;
-			std::cin >> scientist->first_name >> scientist->last_name >> scientist->sci_val;
+			std::cin >> scientist->name >> tmp >> scientist->sci_val;
+			scientist->name += " " + tmp;
 			group_1.push(scientist);
 		}
-		for (int i = table_size / 2; i > 0; i--) {
+		for (int i = n / 2; i > 0; i--) {
 			Scientist* scientist = new Scientist;
-			std::cin >> scientist->first_name >> scientist->last_name >> scientist->sci_val;
+			std::cin >> scientist->name >> tmp >> scientist->sci_val;
+			scientist->name += " " + tmp;
 			group_2.push(scientist);
 		}
 	}
-	void shift_groups(ushort nof_pos_shifted = 1) {
-		while (nof_pos_shifted-- > 0) {
+
+	// Przesuwa podzia³ na grupy o jedn¹ osobê
+	void shift_groups(ushort shift = 1) {
+		while (shift-- > 0) {
 			group_1.push(group_2.pop());
 			group_2.push(group_1.pop());
 		}
 	}
+
+	// Sprawdza czy ró¿nice zdolnoœci naukowych w grupach S¹ poni¿ej maksimum
 	bool is_valid() {
-		return group_1.sci_diff() <= max_diff && group_2.sci_diff() <= max_diff;
+		return group_1.sci_val_diff() <= max_diff && group_2.sci_val_diff() <= max_diff;
 	}
-	uint sci_val_sum_diff() {
-		return abs((int)group_1.sci_sum() - (int)group_1.sci_sum());
+
+	// Zwraca ró¿nicê sum zdolnoœci naukowych w dwóch grupach
+	ushort sci_val_sum_diff() {
+		return abs((int)group_1.sci_val_sum() - (int)group_2.sci_val_sum());
 	}
-	void display() {
-		group_2.display();
-		std::cout << " " << std::endl;
-		group_1.display();
+	
+	// Wyœwietla grupy w ze spacj¹ pomiêdzy, najpierw grupa_2 dla reversed = true
+	void display(bool reversed = false) {
+		if (reversed) {
+			group_2.display();
+			std::cout << " " << std::endl;
+			group_1.display();
+		} else {
+			group_1.display();
+			std::cout << " " << std::endl;
+			group_2.display();
+		}
 	}
 };
 
@@ -139,31 +170,17 @@ int main() {
 	ushort index = 0;
 	for (int i = 0; i < n / 2; i++) {
 		if (table.is_valid()) {
-			if (min_sci_val_sum_diff > table.sci_val_sum_diff()) {
-				min_sci_val_sum_diff = table.sci_val_sum_diff();
+			uint sci_val_sum_diff = table.sci_val_sum_diff();
+			if (min_sci_val_sum_diff > sci_val_sum_diff) {
+				if (sci_val_sum_diff == 0) {
+					table.display();
+					return 0;
+				}
+				min_sci_val_sum_diff = sci_val_sum_diff;
 				index = i;
 			}
 		}
 		table.shift_groups();
-		/*if (first_half.sci_diff() <= v && second_half.sci_diff() <= v) {
-			uint sum_diff = abs((int)first_half.sci_sum() - (int)second_half.sci_sum());
-			if (min_sum_diff > sum_diff) {
-				if (sum_diff == 0) {
-					for (Scientist* pos = first_half.front(); pos != nullptr; pos = pos->next) {
-						std::cout << pos->first_name << " " << pos->last_name << std::endl;
-					}
-					std::cout << " " << std::endl;
-					for (Scientist* pos = second_half.front(); pos != nullptr; pos = pos->next) {
-						std::cout << pos->first_name << " " << pos->last_name << std::endl;
-					}
-					return 0;
-				}
-				min_sum_diff = sum_diff;
-				index = i;
-			}
-		}
-		first_half.push(second_half.pop());
-		second_half.push(first_half.pop());*/
 	}
 
 	if (min_sci_val_sum_diff == 1000) {
@@ -173,7 +190,7 @@ int main() {
 
 	table.shift_groups(index);
 
-	table.display();
+	table.display(true);
 
 	return 0;
 }
