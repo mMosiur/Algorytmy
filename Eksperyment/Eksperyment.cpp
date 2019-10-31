@@ -110,15 +110,15 @@ class Table {
 public:
 
 	// Konstruktor
-	Table(uint n, ushort v) : size(n), max_diff(v) {
+	Table(uint size, ushort max_diff) : size(size), max_diff(max_diff) {
 		std::string tmp;
-		for (int i = n / 2; i > 0; i--) {
+		for (ushort i = size / 2; i > 0; i--) {
 			Scientist* scientist = new Scientist;
 			std::cin >> scientist->name >> tmp >> scientist->sci_val;
 			scientist->name += " " + tmp;
 			group_1.push(scientist);
 		}
-		for (int i = n / 2; i > 0; i--) {
+		for (ushort i = size / 2; i > 0; i--) {
 			Scientist* scientist = new Scientist;
 			std::cin >> scientist->name >> tmp >> scientist->sci_val;
 			scientist->name += " " + tmp;
@@ -140,7 +140,7 @@ public:
 	}
 
 	// Zwraca ró¿nicê sum zdolnoœci naukowych w dwóch grupach
-	ushort sci_val_sum_diff() {
+	uint sci_val_sum_diff() {
 		return abs((int)group_1.sci_val_sum() - (int)group_2.sci_val_sum());
 	}
 	
@@ -166,9 +166,9 @@ int main() {
 
 	Table table(n, v);
 
-	uint min_sci_val_sum_diff = 1000;
+	uint min_sci_val_sum_diff = 50000000;
 	ushort index = 0;
-	for (int i = 0; i < n / 2; i++) {
+	for (ushort i = 0; i < n / 2; i++) {
 		if (table.is_valid()) {
 			uint sci_val_sum_diff = table.sci_val_sum_diff();
 			if (min_sci_val_sum_diff > sci_val_sum_diff) {
@@ -183,7 +183,7 @@ int main() {
 		table.shift_groups();
 	}
 
-	if (min_sci_val_sum_diff == 1000) {
+	if (min_sci_val_sum_diff == 50000000) {
 		std::cout << "NIE" << std::endl;
 		return 0;
 	}
