@@ -25,7 +25,7 @@ Potrzebowała więc małego systemu, który na podstawie ponumerowanych i skateg
 ## Wejście
 W pierwsze linii wejścia znajduje się liczba naturalna **n** oznaczająca liczbę wpisów w arkuszu materiałów dowodowych. W kolejnych **n** liniach znajdują się wpisy. Każdy wpis składa się z liczby naturalnej **x**, po której następuje **x** liczb, tworzących wpis.
 
-**1 ≤ n ≤ 10000
+**1 ≤ n ≤ 10000 <br>
 1 ≤ x ≤ 10000**
 
 ## Wyjście
