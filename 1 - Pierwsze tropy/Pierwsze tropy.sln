@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29201.188
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Pierwsze tropy", "Pierwsze tropy.vcxproj", "{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}.Debug|x64.ActiveCfg = Debug|x64
+		{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}.Debug|x64.Build.0 = Debug|x64
+		{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}.Debug|x86.ActiveCfg = Debug|Win32
+		{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}.Debug|x86.Build.0 = Debug|Win32
+		{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}.Release|x64.ActiveCfg = Release|x64
+		{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}.Release|x64.Build.0 = Release|x64
+		{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}.Release|x86.ActiveCfg = Release|Win32
+		{EB6FFA12-BFD4-43EB-AAB8-958050B100AB}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B20FC8AC-2F90-4DAF-BBE6-DDC8DACAF838}
+	EndGlobalSection
+EndGlobal
