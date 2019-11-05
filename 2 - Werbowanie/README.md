@@ -7,9 +7,9 @@ Partycja przy okazji swoich ostatnich badań sporządziła listę **n** nazwisk 
 ## Wejście
 W pierwszej linii wejścia znajduje się liczba naturalna **t**, czyli liczba zestawów danych. Każdy zestaw danych składa się z dwóch liczb naturalnych **n** - liczba nazwisk oraz **p**- liczba nazwisk, jakie należy wyświetlić na wyjściu. W kolejnych liniach znajdują się opisy osób. Na opis osoby składają się: nazwisko jako jednowyrazowy ciąg znaków oraz liczba naturalna **x**, oznaczająca liczbę minut potrzebnych standardowo do przekonania tej osoby do współpracy.
 
-**1 ≤ t ≤ 10**
-**1 ≤ p ≤ n ≤ 50000**
-**1 ≤ x ≤ 1000**
+**1 ≤ t ≤ 10
+1 ≤ p ≤ n ≤ 50000
+1 ≤ x ≤ 1000**
 
 ## Wyjście
 Na wyjściu program dla każdego zestawu danych ma wypisać pierwszych p osób, jakie powinna odwiedzić Partycja oraz minimalny czas w minutach, jaki należy poświęcić na werbowanie pomocników. Wynik powinien być resztą z dzielenia przez **10^6+3**.

@@ -16,9 +16,9 @@ Na wejściu program otrzymuje liczbę **n** oznaczającą rozmiar listy słów o
 ## Wyjście:
 Na wyjściu program powinien wypisać odtworzone zdanie. Działanie kończy się kiedy cała lista zostanie opróżniona.
 
-**1 ≤ n ≤ 30000**
-**0 ≤ p ≤ 30000**
-**-1000000 ≤ x, d ≤ 1000000**
+**1 ≤ n ≤ 30000
+0 ≤ p ≤ 30000
+-1000000 ≤ x, d ≤ 1000000**
 
 ## Przykładowe wejście:
 ```

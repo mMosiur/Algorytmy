@@ -8,8 +8,8 @@ W pierwszej linii wejścia program otrzymuje liczbę **n** oznaczającą ilość
 ## Wyjście:
 Na wyjściu program powinien wyświetlić dwie listy naukowców oddzielone spacją. Listy powinny być wyświetlone w kierunku zgodnym z kierunkiem wprowadzania. Jeżeli naukowców nie da się podzielić zgodnie z wytycznymi należy wyświetlić słowo „NIE”.
 
-**1 ≤ n ≤ 100000**
-**1 ≤ i ≤ 1000**
+**1 ≤ n ≤ 100000
+1 ≤ i ≤ 1000**
 
 ### Przykładowe wejście:
 ```

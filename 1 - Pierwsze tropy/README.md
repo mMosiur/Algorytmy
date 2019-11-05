@@ -7,8 +7,8 @@ Partycji udało się na razie zebrać **n** różnych tropów w tej sprawie. Ka�
 ## Wejście
 W pierwszej linii wejścia znajduje się liczba naturalna **t**, czyli liczba zestawów danych. Każdy zestaw danych składa się z dwóch liczb naturalnych **n** - liczba tropów oraz **m** - liczba metod badawczych. W kolejnych **m** liniach znajdują się pary liczb **x<sub>i</sub>** i **y<sub>i</sub>**, które oznaczają kolejno liczbę zbadanych tropów i liczbę nowych tropów w i-tej metodzie.
 
-**1 ≤ t ≤ 10**
-**1 ≤ n,m ≤ 1000000**
+**1 ≤ t ≤ 10
+1 ≤ n,m ≤ 1000000**
 
 ## Wyjście
 Dla każdego zestawu danych należy wypisać liczbę naturalną, która oznacza minimalną liczbę faz badań, potrzebną do zbadania wszystkich tropów. Jeżeli zestaw metod jest niewystarczający, należy wypisać na standardowym wyjściu **BRAK METOD**.
