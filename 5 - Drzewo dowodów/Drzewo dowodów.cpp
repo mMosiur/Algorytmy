@@ -1,5 +1,0 @@
-#include <istream>
-
-int main() {
-
-}
