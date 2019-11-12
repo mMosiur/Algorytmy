@@ -1,17 +1,16 @@
 #include <iostream>
 
 typedef unsigned short ushort;
-
-
+typedef unsigned int uint;
 
 struct TreeNode {
 
-	const ushort category; // Index of this category
+	const uint category; // Index of this category
 	TreeNode* left_child = nullptr; // First subcategory if this category
 	TreeNode* right_sibling = nullptr; // Next category of the same depth as this one
 
 	// Constructor, sets the category of the node
-	TreeNode(ushort t_category) : category(t_category) {}
+	TreeNode(uint t_category) : category(t_category) {}
 
 	// Destructor, deletes the child node and next node on the same depth
 	~TreeNode() {
@@ -21,7 +20,7 @@ struct TreeNode {
 
 	// Returns the child of a given category
 	// If the category does not exist, it creates one and returns it
-	TreeNode* child_with_category(ushort t_category) {
+	TreeNode* child_with_category(uint t_category) {
 		if (left_child == nullptr) return left_child = new TreeNode(t_category);
 		if (left_child->category == t_category) return left_child;
 		TreeNode* pos = left_child;
@@ -40,11 +39,18 @@ class Tree {
 	// Adds all the necesary nodes and create a path of given length
 	void add_entry(ushort entry_length) {
 		TreeNode* pos = root;
-		ushort cat;
+		uint cat;
 		while (entry_length-- != 0) {
 			std::cin >> cat;
 			pos = pos->child_with_category(cat);
 		}
+	}
+
+	// Displays the node in preorder order: given node -> it's child -> it's sibling
+	void display(TreeNode* subtree_root) {
+		std::cout << subtree_root->category << " ";
+		if (subtree_root->left_child) display(subtree_root->left_child);
+		if (subtree_root->right_sibling) display(subtree_root->right_sibling);
 	}
 
 public:
@@ -63,14 +69,9 @@ public:
 		delete root;
 	}
 
-	// Displays the node in preorder order: this node -> it's child -> it's sibling
-	void display(TreeNode* subtree_root = nullptr) {
-		if (subtree_root == nullptr) display(root->left_child);
-		else {
-			std::cout << subtree_root->category << " ";
-			if(subtree_root->left_child) display(subtree_root->left_child);
-			if (subtree_root->right_sibling) display(subtree_root->right_sibling);
-		}
+	// Displays the tree without displaying the root
+	void display() {
+		if(root->left_child) display(root->left_child);
 	}
 };
 
