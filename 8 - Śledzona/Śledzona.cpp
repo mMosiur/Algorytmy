@@ -4,69 +4,89 @@
 
 typedef unsigned int uint;
 
+std::string test(unsigned& x, unsigned& y, unsigned& id); // Deklaracja funkcji test, której definicja zostanie dołączona do rozwiązania
+
+// Struktura opisująca pozycję
 struct Position {
-	uint x;
-	uint y;
+	uint x; // Pozycja w poziomie
+	uint y; // Pozycja w pionie
+
+	// Operator dzielący oba koordynaty pozycji jednocześnie
+	Position operator/(const uint& div) const {
+		return { x / div, y / div };
+	}
 };
 
-std::string test(Position& p, unsigned& id) {
-	return test(p.x, p.y, id);
+// Funkcja wywołująca funkcję test dla podanej pozycji
+std::string test(Position& pos, unsigned& id) {
+	return test(pos.x, pos.y, id);
 }
 
+// Operator wypiujący pozycję
 std::ostream& operator <<(std::ostream& out, const Position& p) {
 	out << p.x << " " << p.y;
 	return out;
 }
 
+// Klasa opisująca robota wyszukującego pluskwy
 class Robot {
-	uint room_length, room_width;
-	uint nof_trackers;
+	Position corner; // Skrajny punkt mieszkania
+	Position current_position; // Pozycja robora w mieszkaniu
+	Position jump_length; // Długość skoku
 
-
-	Position search_for_tracker(uint& tracker_id) {
-		Position pos = { room_length / 2, room_width / 2 };
-		uint jump_x = pos.x / 2;
-		uint jump_y = pos.y / 2;
-		for (std::string direction = test(pos, tracker_id); !direction.empty(); direction = test(pos, tracker_id)) {
-			if (direction.find_first_of('N') != std::string::npos) {
-				pos.y += jump_y;
-				jump_y /= 2;
-				if (jump_y == 0) jump_y = 1;
-			} else if (direction.find_first_of('S') != std::string::npos) {
-				pos.y -= jump_y;
-				jump_y /= 2;
-				if (jump_y == 0) jump_y = 1;
-			}
-			if (direction.find_first_of('E') != std::string::npos) {
-				pos.x += jump_x;
-				jump_x /= 2;
-				if (jump_x == 0) jump_x = 1;
-			} else if (direction.find_first_of('W') != std::string::npos) {
-				pos.x -= jump_x;
-				if (jump_x == 0) jump_x = 1;
-			}
+	// Funkcja wykonująca skos w podanym kierunku
+	void jump(std::string direction) {
+		if (direction.find_first_of('N') != std::string::npos) {
+			current_position.y += jump_length.y;
+		} else if (direction.find_first_of('S') != std::string::npos) {
+			current_position.y -= jump_length.y;
 		}
-		return pos;
+		if (direction.find_first_of('E') != std::string::npos) {
+			current_position.x += jump_length.x;
+		} else if (direction.find_first_of('W') != std::string::npos) {
+			current_position.x -= jump_length.x;
+		}
+		jump_length = jump_length / 2;
+		if (jump_length.x == 0) jump_length.x = 1;
+		if (jump_length.y == 0) jump_length.y = 1;
 	}
+
+	// Funkcja wyszukująca pluskwę o podanym ID i zwracająca jej pozycję
+	Position find_tracker(uint& tracker_id) {
+		current_position = corner / 2;
+		jump_length = current_position / 2;
+		std::string direction;
+		while (!(direction = test(current_position, tracker_id)).empty()) {
+			jump(direction);
+		}
+		return current_position;
+	}
+
 public:
-	Robot(uint length, uint width, uint nof_trackers) : room_length(length), room_width(width), nof_trackers(nof_trackers) {}
-	void search() {
+
+	// Konstruktor pobierający wymiary pokoju
+	Robot(uint width, uint length) :
+		corner{ width, length },
+		current_position(corner / 2),
+		jump_length(current_position / 2) {}
+
+	// Funkcja wyszukująca wszystkie pluskwy i wypisująca ich pozycje
+	void search(uint nof_trackers) {
 		for (uint id = 0; id < nof_trackers; id++) {
-			std::cout << search_for_tracker(id) << std::endl;
+			std::cout << find_tracker(id) << std::endl;
 		}
 	}
 };
 
 int main() {
-	// Magiczna linijka?
 	uint x; // Szerokość mieszkania Partycji
 	uint y; // Długość mieszkania Partycji
 	uint t; // Ilość pluskiew w mieszkaniu Partycji
 	std::cin >> x >> y >> t;
 
-	Robot robot(x, y, t);
+	Robot robot(x, y); // Robot wyszukujący pluskwy
 
-	robot.search();
+	robot.search(t); // Znalezienie i wypisanie pozycji pluskiew
 
 	return 0;
 }
