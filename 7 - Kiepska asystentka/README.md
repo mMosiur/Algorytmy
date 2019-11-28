@@ -7,10 +7,9 @@ W pierwszej linii wejścia znajduje się liczba naturalna **t**, czyli liczba ze
 
 W ostatniej linii zestawu znajduje się lista nazwisk, oznaczająca proponowaną przez asystentkę kolejność.
 
-```
 **1 ≤ t ≤ 10**<br>
 **1 ≤ n ≤ 1000000**
-```
+
 ## Wyjście
 Na wyjściu dla każdego zestawu danych należy wypisać słowo **TAK**, jeżeli proponowana kolejność jest zgodna z założeniami lub **NIE** w przeciwnym wypadku.
 
