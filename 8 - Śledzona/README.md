@@ -1,38 +1,36 @@
-# Œledzona
+# Åšledzona
 
-Od pewnego czasu Partycja mia³a wra¿enie, ¿e ktoœ j¹ œledzi. Kiedy przechadza³a siê po mieœcie wrêcz czu³a spojrzenia tajnych agentów. Nawet we w³asnym mieszkaniu czu³a siê nieswojo. Zaczê³a siê zastanawiaæ czy przypadkiem ktoœ nie umieœci³ urz¹dzeñ pods³uchuj¹cych w jej lokum. Uda³a siê do swojego przyjaciela który wrêczy³ jej detektor pluskiew. Urz¹dzenie jest w stanie okreœliæ iloœæ pods³uchów w pokoju oraz wskazaæ kierunek do ka¿dego z nich z dowolnego punktu w formie kierunków geograficznych. Partycja obawia siê, ¿e je¿eli rozpocznie poszukiwania osobiœcie, wzbudzi tym czujnoœæ agentów. Postanowi³a zatem wykorzystaæ do tego celu robota jednak potrzebuje odpowiedniego oprogramowania.
+Od pewnego czasu Partycja miaÅ‚a wraÅ¼enie, Å¼e ktoÅ› jÄ… Å›ledzi. Kiedy przechadzaÅ‚a siÄ™ po mieÅ›cie wrÄ™cz czuÅ‚a spojrzenia tajnych agentÃ³w. Nawet we wÅ‚asnym mieszkaniu czuÅ‚a siÄ™ nieswojo. ZaczÄ™Å‚a siÄ™ zastanawiaÄ‡ czy przypadkiem ktoÅ› nie umieÅ›ciÅ‚ urzÄ…dzeÅ„ podsÅ‚uchujÄ…cych w jej lokum. UdaÅ‚a siÄ™ do swojego przyjaciela ktÃ³ry wrÄ™czyÅ‚ jej detektor pluskiew. UrzÄ…dzenie jest w stanie okreÅ›liÄ‡ iloÅ›Ä‡ podsÅ‚uchÃ³w w pokoju oraz wskazaÄ‡ kierunek do kaÅ¼dego z nich z dowolnego punktu w formie kierunkÃ³w geograficznych. Partycja obawia siÄ™, Å¼e jeÅ¼eli rozpocznie poszukiwania osobiÅ›cie, wzbudzi tym czujnoÅ›Ä‡ agentÃ³w. PostanowiÅ‚a zatem wykorzystaÄ‡ do tego celu robota jednak potrzebuje odpowiedniego oprogramowania.
 
-## Wejœcie
+## WejÅ›cie
 
-Na wejœciu program otrzymuje trzy liczby naturalne. Pierwsze dwie opisuj¹ rozmiary mieszkania Partycji w postaci dwóch liczb **x** oraz **y**. Ostatnia liczba to iloœæ poszukiwanych pluskiew **t**. Do lokalizacji nale¿y wykorzystaæ funkcjê wbudowan¹ **std::string test(unsigned &x, unsigned &y, unsigned &id)**. Dwie pierwsze zmienne to wspó³rzêdne robota w pokoju natomiast ostatnia to numer poszukiwanej pluskwy numerowana od 0 do t-1. Funkcja zwraca jeden z oœmiu kierunków geograficznych (_N_, _NE_, _E_, _SE_, _S_, _SW_, _W_, _NW_) okreœlaj¹ce w któr¹ stronê nale¿y siê poruszyæ, ¿eby znaleŸæ poszukiwany punkt. Je¿eli pods³uch znajduje siê w testowanym punkcie, funkcja zwróci pusty ci¹g znaków.
+Na wejÅ›ciu program otrzymuje trzy liczby naturalne. Pierwsze dwie opisujÄ… rozmiary mieszkania Partycji w postaci dwÃ³ch liczb **x** oraz **y**. Ostatnia liczba to iloÅ›Ä‡ poszukiwanych pluskiew **t**. Do lokalizacji naleÅ¼y wykorzystaÄ‡ funkcjÄ™ wbudowanÄ… **std::string test(unsigned &x, unsigned &y, unsigned &id)**. Dwie pierwsze zmienne to wspÃ³Å‚rzÄ™dne robota w pokoju natomiast ostatnia to numer poszukiwanej pluskwy numerowana od 0 do t-1. Funkcja zwraca jeden z oÅ›miu kierunkÃ³w geograficznych (_N_, _NE_, _E_, _SE_, _S_, _SW_, _W_, _NW_) okreÅ›lajÄ…ce w ktÃ³rÄ… stronÄ™ naleÅ¼y siÄ™ poruszyÄ‡, Å¼eby znaleÅºÄ‡ poszukiwany punkt. JeÅ¼eli podsÅ‚uch znajduje siÄ™ w testowanym punkcie, funkcja zwrÃ³ci pusty ciÄ…g znakÃ³w.
 
-## Wyjœcie
+## WyjÅ›cie
 
-Na wyjœciu program powinien wyœwietliæ lokalizacjê wszystkich pluskiew zgodnie z rosn¹c¹ numeracj¹ id funkcji test.
+Na wyjÅ›ciu program powinien wyÅ›wietliÄ‡ lokalizacjÄ™ wszystkich pluskiew zgodnie z rosnÄ…cÄ… numeracjÄ… id funkcji test.
 
-```
-**0 < x ? 2000000000**
+**0 < x â‰¤ 2000000000**
 <br>
-**0 < y ? 2000000000**
+**0 < y â‰¤ 2000000000**
 <br>
-**0 < t ? 100000**
-```
+**0 < t â‰¤ 100000**
 
-### Przyk³adowe wejœcie
+### PrzykÅ‚adowe wejÅ›cie
 
 ```
 20 20 2
 ```
 
-### Przyk³adowe wyjœcie
+### PrzykÅ‚adowe wyjÅ›cie
 ```
 5 5
 14 16
 ```
 
-**Program przesy³any na sprawdzarkê _nie mo¿e zawieraæ_ funkcji test! Zostanie ona automatycznie do³¹czona przez system do rozwi¹zania i jest charakterystyczna dla ka¿dego z testów.**<br>
+**Program przesyÅ‚any na sprawdzarkÄ™ _nie moÅ¼e zawieraÄ‡_ funkcji test! Zostanie ona automatycznie doÅ‚Ä…czona przez system do rozwiÄ…zania i jest charakterystyczna dla kaÅ¼dego z testÃ³w.**<br>
 
-Funkcja w przyk³adzie jest zdefiniowana nastêpuj¹co:
+Funkcja w przykÅ‚adzie jest zdefiniowana nastÄ™pujÄ…co:
 ```
 std::string test(unsigned &x, unsigned &y, unsigned &id) {
     unsigned xTest, yTest;
