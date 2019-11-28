@@ -15,9 +15,7 @@ Na początku postanowiła wyznaczyć najkrótszą drogę z siedziby do miejsca s
 ## Wejście
 W pierwszej linii wejścia znajdują się dwie liczby naturalne **n** i **m**, oznaczające wymiary mapy. W kolejnych liniach znajduje się reprezentacja mapy zgodna z opisem. Należy przyjąć, że zawsze istnieje droga prowadząca od siedziby do miejsca spotkania.
 
-```
 **1 ≤ n,m ≤ 1000**
-```
 
 ## Wyjście
 Na wyjściu program ma wypisać dwie liczby naturalne oznaczające długość najkrótszej drogi do punktu docelowego oraz liczbę napotkanych miejsc monitorowanych.
