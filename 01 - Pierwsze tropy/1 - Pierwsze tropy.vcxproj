@@ -20,10 +20,11 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{6C804230-6CB9-4010-89D1-0954C12A024C}</ProjectGuid>
+    <ProjectGuid>{A9797AC8-A1A4-4BA6-9575-589A24778AD9}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My3Spisek</RootNamespace>
+    <RootNamespace>My1Pierwszetropy</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>01 - Pierwsze tropy</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -151,7 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Spisek.cpp" />
+    <ClCompile Include="Pierwsze tropy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />

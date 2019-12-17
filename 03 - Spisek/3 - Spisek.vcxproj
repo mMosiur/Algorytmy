@@ -20,10 +20,11 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{B03C86A2-9E70-43E5-A43B-84FE3F7DE31E}</ProjectGuid>
+    <ProjectGuid>{6C804230-6CB9-4010-89D1-0954C12A024C}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>My4Eksperyment</RootNamespace>
+    <RootNamespace>My3Spisek</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>03 - Spisek</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -151,7 +152,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Eksperyment.cpp" />
+    <ClCompile Include="Spisek.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
