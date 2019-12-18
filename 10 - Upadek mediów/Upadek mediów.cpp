@@ -1,5 +1,5 @@
 #include <iostream>
-#include <queue>
+#include <vector>
 
 typedef unsigned short ushort;
 typedef unsigned int uint;
@@ -14,9 +14,9 @@ struct Citation {
 
 // Klasa opisuj¹ca relacjê analizowanych mediów
 class Medias {
-	std::queue<Citation> citations; // Kolejka cytowañ do przeanalizowania
+	std::vector<Citation> citations[7]; // Tablica wektorów cytowañ, ka¿dy wektor przechowuje cytowania z danego dnia
 	ushort nof_medias; // Liczba mediów do przeanalizowania
-	ushort day; // Aktualny dzieñ tygodnia (0-6)
+	ushort day; // Aktualny dzieñ tygodnia
 	uint nof_days_left; // Pozosta³a liczba dni do analizy
 	uint* week[7]; // Tabela pomocnicza tygodnia, PROGRAMOWANIE DYNAMICZNE
 
@@ -34,14 +34,17 @@ public:
 		for (ushort i = 0; i < m; i++) {
 			ushort a, b, c, d;
 			std::cin >> a >> b >> c >> d;
-			citations.push({ a,b,c,d });
+			citations[b].push_back({ a,b,c,d });
 		}
 	}
 
 	// Funkcja zwracaj¹ca podsumowanie dnia
 	uint day_summary() {
-		ushort day_summary = 0;
-		for (ushort media = 0; media < nof_medias; media++) day_summary += week[day][media];
+		uint day_summary = 0;
+		for (ushort media = 0; media < nof_medias; media++) {
+			day_summary += week[day][media];
+			day_summary %= 100000007;
+		}
 		return day_summary;
 	}
 
@@ -57,12 +60,13 @@ public:
 	uint nof_citations_paths() {
 		uint result = 0;
 		do {
-			while (!citations.empty() && citations.front().day == day) {
-				week[day][citations.front().newspaper] += week[citations.front().cited_day][citations.front().cited_newspaper];
-				week[day][citations.front().newspaper] %= 100000007;
-				citations.pop();
+			for (Citation& citation : citations[day])
+			{
+				week[day][citation.newspaper] += week[citation.cited_day][citation.cited_newspaper];
+				week[day][citation.newspaper] %= 100000007;
 			}
 			result += day_summary();
+			result %= 100000007;
 		} while (next_day());
 		return result;
 	}
