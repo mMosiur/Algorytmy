@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
-    <ProjectGuid>{F66BA804-8CFF-4F91-A66B-4FB8867A7407}</ProjectGuid>
-    <RootNamespace>My11Wolontariusze</RootNamespace>
+    <ProjectGuid>{8BE96805-AC85-446E-8030-D4B32C8D68E6}</ProjectGuid>
+    <RootNamespace>My12Porządki</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -138,7 +138,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Wolontariusze.cpp" />
+    <ClCompile Include="Porządki.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="README.md" />
