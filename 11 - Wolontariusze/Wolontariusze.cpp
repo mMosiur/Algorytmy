@@ -67,27 +67,18 @@ public:
 		nof_volunteers_available++;
 	}
 
-	// Funkcja zwracaj¹ca, czy wszystkie po³¹czenia s¹ obserwowane
-	bool everything_watched() {
-		for(auto& connection : connections) {
-			if(!connection->is_watched()) return false;
-		}
-		return true;
-	}
-
 	// Funkcja zwracaj¹ca, czy wolontariuszy wystarczy do obsadzenia systemu kolejowego
-	bool enough_volunteers() {
-		if(everything_watched()) return true;
+	bool enough_volunteers(ushort pos = 0) {
+		if(pos == connections.size()) return true;
+		if(connections[pos]->is_watched()) return enough_volunteers(pos + 1);
 		if(nof_volunteers_available == 0) return false;
-		for(auto& connection : connections) {
-			if(connection->is_watched()) continue;
-			add_to_watch(connection->station_a);
-			if(enough_volunteers()) return true;
-			remove_from_watch(connection->station_a);
-			add_to_watch(connection->station_b);
-			if(enough_volunteers()) return true;
-			remove_from_watch(connection->station_b);
-		}
+		add_to_watch(connections[pos]->station_a);
+		if(enough_volunteers(pos + 1)) return true;
+		remove_from_watch(connections[pos]->station_a);
+		add_to_watch(connections[pos]->station_b);
+		if(enough_volunteers(pos + 1)) return true;
+		remove_from_watch(connections[pos]->station_b);
+
 		return false;
 	}
 

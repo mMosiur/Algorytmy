@@ -1,5 +1,6 @@
 #include <iostream>
 #include <list>
+#include <vector>
 
 typedef unsigned short ushort;
 typedef unsigned int uint;
@@ -12,10 +13,11 @@ struct Document {
 	short subject_symbols[4]; // Tablica zawieraj¹ca symbole tematyki dokumentu, nieistniej¹cy symbol oznaczany jest przez -1 (0-255)
 
 	// Konstruktor inicjalizuj¹cy i przyjmuj¹cy zmienne
-	Document() : subject_symbols{ -1,-1,-1,-1 } {
-		std::cin >> unique_number >> priority >> random_code;
-		ushort nof_subject_symbols;
-		std::cin >> nof_subject_symbols;
+	Document(uint unique_number, ushort priority, uint random_code, ushort nof_subject_symbols) :
+		unique_number(unique_number),
+		priority(priority),
+		random_code(random_code),
+		subject_symbols{ -1,-1,-1,-1 } {
 		for(ushort i = 0; i < nof_subject_symbols; i++) {
 			std::cin >> subject_symbols[i];
 		}
@@ -24,76 +26,64 @@ struct Document {
 
 // Klasa sortuj¹ca dokumenty
 class DocumentSorter {
-	std::list<Document> documents; // Lista wszystkich dokumentów
+	std::vector<Document*> documents; // Lista wszystkich dokumentów
 	std::list<ushort> sorting_order; // Kolejnoœæ parametrów sortowania
-	
+
 	// Funkcja wykonuj¹ca sortowanie kube³kowe na podanym parametrze
 	void bucket_sort(ushort sorting_parameter) {
-		std::list<Document>* buckets;
+		std::list<Document*>* buckets = nullptr;
 
 		if(sorting_parameter == 1) { // Sortowanie na unikalnych numerach dokumentów
-			ushort nof_buckets = (documents.size() - 1) / 1000 + 1;
-			std::list<Document>* buckets = new std::list<Document>[nof_buckets];
-			auto documents_iterator = documents.begin();
-			while(documents_iterator != documents.end()) {
-				ushort unique_number = documents_iterator->unique_number;
-				buckets[unique_number / 1000].splice(buckets[unique_number / 1000].end(), documents, documents_iterator++);
+			std::vector<Document*> documents_copy(documents);
+			for(auto& document : documents_copy) {
+				documents[document->unique_number - 1] = document;
 			}
-			for(ushort i = 0; i < nof_buckets; i++) {
-				buckets[i].sort(
-					[](const Document& doc1, const Document& doc2) {
-					return doc1.unique_number < doc2.unique_number;
-					}
-				);
-				documents.splice(documents.end(), buckets[i]);
-			}
-			delete[] buckets;
 		} else if(sorting_parameter == 2) { // Sortowanie na priorytetach dokumentów
-			buckets = new std::list<Document>[11];
-			auto documents_iterator = documents.begin();
-			while(documents_iterator != documents.end()) {
-				ushort priority = documents_iterator->priority;
-				buckets[priority].splice(buckets[priority].end(), documents, documents_iterator++);
+			buckets = new std::list<Document*>[11];
+			for(auto& document : documents) {
+				buckets[document->priority].push_back(document);
 			}
+			uint pos = 0;
 			for(ushort i = 0; i < 11; i++) {
-				if(buckets[i].empty()) continue;
-				documents.splice(documents.end(), buckets[i]);
+				for(auto& document : buckets[i]) {
+					documents[pos++] = document;
+				}
 			}
-			delete[] buckets;
 		} else if(sorting_parameter == 3) { // Sortowanie na losowych kodach dokumentów
-			buckets = new std::list<Document>[10000];
-			auto documents_iterator = documents.begin();
-			while(documents_iterator != documents.end()) {
-				uint random_code = documents_iterator->random_code;
+			buckets = new std::list<Document*>[1000];
+			for(auto& document : documents) {
+				uint random_code = document->random_code;
 				if(random_code == 10000000) random_code = 9999999;
-				buckets[random_code / 1000].splice(buckets[random_code / 1000].end(), documents, documents_iterator++);
+				buckets[random_code / 10000].push_back(document);
 			}
-			for(ushort i = 0; i < 10000; i++) {
-				if(buckets[i].empty()) continue;
+			uint pos = 0;
+			for(ushort i = 0; i < 1000; i++) {
 				buckets[i].sort(
-					[](const Document& doc1, const Document& doc2) {
-						return doc1.random_code < doc2.random_code;
+					[](const auto& doc1, const auto& doc2) {
+						return doc1->random_code < doc2->random_code;
 					}
 				);
-				documents.splice(documents.end(), buckets[i]);
+				for(auto& document : buckets[i]) {
+					documents[pos++] = document;
+				}
 			}
-			delete[] buckets;
 		} else if(sorting_parameter == 4) { // Sortowanie na symbolach tematyki dokumentów
 			for(short i = 3; i >= 0; i--) { // Sortowanie na ka¿dym symbolu od ty³u
-				buckets = new std::list<Document>[257];
-				auto documents_iterator = documents.begin();
-				while(documents_iterator != documents.end()) {
-					short subject_symbol = documents_iterator->subject_symbols[i] + 1;
-					buckets[subject_symbol].splice(buckets[subject_symbol].end(), documents, documents_iterator++);
+				buckets = new std::list<Document*>[257];
+				for(auto& document : documents) {
+					buckets[document->subject_symbols[i] + 1].push_back(document);
 				}
+				uint pos = 0;
 				for(ushort i = 0; i < 257; i++) {
-					if(buckets[i].empty()) continue;
-					documents.splice(documents.end(), buckets[i]);
+					for(auto& document : buckets[i]) {
+						documents[pos++] = document;
+					}
 				}
 				delete[] buckets;
 			}
+			buckets = nullptr;
 		}
-		return;
+		if(buckets) delete[] buckets;
 	}
 
 public:
@@ -101,7 +91,12 @@ public:
 	// Konstruktowa przyjmuj¹cy iloœæ dokumentów i wczytuj¹cy je oraz kolejnoœæ sortowania
 	DocumentSorter(uint nof_documents) {
 		for(uint i = 0; i < nof_documents; i++) {
-			documents.emplace_back();
+			uint unique_number;
+			ushort priority;
+			uint random_code;
+			ushort nof_subject_symbols;
+			std::cin >> unique_number >> priority >> random_code >> nof_subject_symbols;
+			documents.push_back(new Document(unique_number, priority, random_code, nof_subject_symbols));
 		}
 		for(ushort i = 0; i < 4; i++) {
 			ushort sorting_parameter;
@@ -122,11 +117,18 @@ public:
 	uint result() {
 		uint result = 0;
 		uint index = 0;
-		for(Document& document : documents) {
-			result += (document.random_code * index++);
+		for(Document*& document : documents) {
+			result += (document->random_code * index++);
 			result %= 100000007;
 		}
 		return result;
+	}
+
+	// Destruktor
+	~DocumentSorter() {
+		for(auto& document : documents) {
+			delete document;
+		}
 	}
 };
 
