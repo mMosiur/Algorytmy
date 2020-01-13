@@ -1,23 +1,22 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <algorithm>
 
 typedef unsigned short ushort;
 typedef unsigned int uint;
+typedef unsigned long ulong;
 
-// Struktura opisuj¹ca pojedynczy dokument
+// Struktura dokumentu
 struct Document {
-	uint unique_number; // Unikalny numer dokumentu (0 - n)
+	uint unique_number; // Unikalny numer (1 - n)
 	ushort priority; // Priorytet (0 - 10)
-	uint random_code; // Losowy kod (0 - 10000000)
-	short subject_symbols[4]; // Tablica zawieraj¹ca symbole tematyki dokumentu, nieistniej¹cy symbol oznaczany jest przez -1 (0-255)
+	uint random_code; // Losowy kod (0 - 10,000,000)
+	short subject_symbols[4]; // Symbole tematyki (0 - 255 oraz, -1 dla braku wartoœci)
 
-	// Konstruktor inicjalizuj¹cy i przyjmuj¹cy zmienne
+	// Konstruktor przyjmuj¹cy oraz wczytuj¹cy dane
 	Document(uint unique_number, ushort priority, uint random_code, ushort nof_subject_symbols) :
-		unique_number(unique_number),
-		priority(priority),
-		random_code(random_code),
-		subject_symbols{ -1,-1,-1,-1 } {
+		unique_number(unique_number), priority(priority), random_code(random_code), subject_symbols{ -1,-1,-1,-1 } {
 		for(ushort i = 0; i < nof_subject_symbols; i++) {
 			std::cin >> subject_symbols[i];
 		}
@@ -26,123 +25,135 @@ struct Document {
 
 // Klasa sortuj¹ca dokumenty
 class DocumentSorter {
-	std::vector<Document*> documents; // Lista wszystkich dokumentów
-	std::list<ushort> sorting_order; // Kolejnoœæ parametrów sortowania
+	std::vector<Document*> documents; // Wektor wskaŸników na dokumenty
+	std::list<ushort> sorting_order; // Lista kolejnoœci sortowania
 
-	// Funkcja wykonuj¹ca sortowanie kube³kowe na podanym parametrze
-	void bucket_sort(ushort sorting_parameter) {
-		std::list<Document*>* buckets = nullptr;
+	// Funkcja sortuj¹ca dokumenty po unikalnym numerze nie jest potrzebna, poniewa¿
+	// dokumenty bêd¹ sortowane bo unikalnym numerze przy wczytywaniu danych w konstruktorze.
 
-		if(sorting_parameter == 1) { // Sortowanie na unikalnych numerach dokumentów
-			std::vector<Document*> documents_copy(documents);
-			for(auto& document : documents_copy) {
-				documents[document->unique_number - 1] = document;
-			}
-		} else if(sorting_parameter == 2) { // Sortowanie na priorytetach dokumentów
-			buckets = new std::list<Document*>[11];
-			for(auto& document : documents) {
-				buckets[document->priority].push_back(document);
-			}
-			uint pos = 0;
-			for(ushort i = 0; i < 11; i++) {
-				for(auto& document : buckets[i]) {
-					documents[pos++] = document;
-				}
-			}
-		} else if(sorting_parameter == 3) { // Sortowanie na losowych kodach dokumentów
-			buckets = new std::list<Document*>[1000];
-			for(auto& document : documents) {
-				uint random_code = document->random_code;
-				if(random_code == 10000000) random_code = 9999999;
-				buckets[random_code / 10000].push_back(document);
-			}
-			uint pos = 0;
-			for(ushort i = 0; i < 1000; i++) {
-				buckets[i].sort(
-					[](const auto& doc1, const auto& doc2) {
-						return doc1->random_code < doc2->random_code;
-					}
-				);
-				for(auto& document : buckets[i]) {
-					documents[pos++] = document;
-				}
-			}
-		} else if(sorting_parameter == 4) { // Sortowanie na symbolach tematyki dokumentów
-			for(short i = 3; i >= 0; i--) { // Sortowanie na ka¿dym symbolu od ty³u
-				buckets = new std::list<Document*>[257];
-				for(auto& document : documents) {
-					buckets[document->subject_symbols[i] + 1].push_back(document);
-				}
-				uint pos = 0;
-				for(ushort i = 0; i < 257; i++) {
-					for(auto& document : buckets[i]) {
-						documents[pos++] = document;
-					}
-				}
-				delete[] buckets;
-			}
-			buckets = nullptr;
+	// Funkcja sortuj¹ca dokumenty po priorytecie
+	void sort_by_priority() {
+		std::vector<Document*> buckets[11];
+		for(auto& doc : documents) {
+			buckets[doc->priority].push_back(doc);
 		}
-		if(buckets) delete[] buckets;
+		uint pos = 0;
+		for(ushort i = 0; i < 11; i++) {
+			for(auto& doc : buckets[i]) {
+				documents[pos++] = doc;
+			}
+		}
+	}
+
+	// Funkcja sortuj¹ca dokumenty po losowym kodzie
+	void sort_by_random_code() {
+		std::vector<Document*>* buckets = new std::vector<Document*>[10000];
+		for(auto& doc : documents) {
+			ushort bucket_number = ((int)doc->random_code - 1) / 1000;
+			buckets[bucket_number].push_back(doc);
+		}
+		uint pos = 0;
+		for(ushort i = 0; i < 10000; i++) {
+			if(buckets[i].empty()) continue;
+			std::stable_sort(buckets[i].begin(), buckets[i].end(),
+							 [](const auto& doc1, const auto& doc2) {
+								 return doc1->random_code < doc2->random_code;
+							 }
+			);
+			for(auto& doc : buckets[i]) {
+				documents[pos++] = doc;
+			}
+		}
+		delete[] buckets;
+	}
+
+	// Funkcja sortuj¹ca dokumenty leksykograficznie po symbolach tematu
+	void sort_by_subject_symbols() {
+		for(short i = 3; i >= 0; i--) {
+			std::vector<Document*> buckets[257];
+			for(auto& doc : documents) {
+				buckets[doc->subject_symbols[i] + 1].push_back(doc);
+			}
+			uint pos = 0;
+			for(ushort j = 0; j < 257; j++) {
+				for(auto& doc : buckets[j]) {
+					documents[pos++] = doc;
+				}
+			}
+		}
 	}
 
 public:
 
-	// Konstruktowa przyjmuj¹cy iloœæ dokumentów i wczytuj¹cy je oraz kolejnoœæ sortowania
+	// Konstruktor wczytuj¹cy dane bezpoœrednio do postaci posortowanej bo unikalnych numerach dokumentów
 	DocumentSorter(uint nof_documents) {
+		documents.resize(nof_documents);
 		for(uint i = 0; i < nof_documents; i++) {
 			uint unique_number;
 			ushort priority;
 			uint random_code;
 			ushort nof_subject_symbols;
 			std::cin >> unique_number >> priority >> random_code >> nof_subject_symbols;
-			documents.push_back(new Document(unique_number, priority, random_code, nof_subject_symbols));
+			// Wstawienie dokumentu bezpoœrednio do odpowiedniego miejsca w wektorze, aby by³ on od razu posortowany
+			documents[unique_number - 1] = new Document(unique_number, priority, random_code, nof_subject_symbols);
 		}
 		for(ushort i = 0; i < 4; i++) {
 			ushort sorting_parameter;
 			std::cin >> sorting_parameter;
-			sorting_order.push_front(sorting_parameter);
 			if(sorting_parameter == 1) break;
+			// Poniewa¿ zawsze sortowanie zaczynaæ bêdzie siê od 1, jest ona wykonana bezpoœrednio przy wczytaniu danych
+			sorting_order.push_front(sorting_parameter);
 		}
 	}
 
-	// Funkcja sortuj¹ca dokumenty wielokrotnie zgodnie z zadan¹ kolejnoœci¹ sortowania
+	// Funkcja sortuj¹ca dokumenty zgodnie z kolejnoœci¹ sortowania
 	void sort() {
-		for(ushort& sorting_parameter : sorting_order) {
-			bucket_sort(sorting_parameter);
+		for(auto& sorting_parameter : sorting_order) {
+			switch(sorting_parameter) {
+				// sortowanie 1 wykonane jest przy wczytywaniu danych
+			case 2:
+				sort_by_priority();
+				break;
+			case 3:
+				sort_by_random_code();
+				break;
+			case 4:
+				sort_by_subject_symbols();
+				break;
+			}
 		}
 	}
 
-	// Funkcja zwracaj¹ca sumê losowych kodów poszczególnych dokumentow pomno¿onych przez ich indeks modulo 100000007
+	// Funkcja zwracaj¹ca sumê losowych kodów pomno¿onych przez indeks dokumentu modulo 100,000,007
 	uint result() {
 		uint result = 0;
-		uint index = 0;
-		for(Document*& document : documents) {
-			result += (document->random_code * index++);
-			result %= 100000007;
+		for(uint i = 0; i < documents.size(); i++) {
+			result = (result + (ulong)documents[i]->random_code * i) % 100000007;
 		}
 		return result;
 	}
 
 	// Destruktor
 	~DocumentSorter() {
-		for(auto& document : documents) {
-			delete document;
+		for(auto& doc : documents) {
+			delete doc;
 		}
 	}
+
 };
 
 int main() {
 	std::ios_base::sync_with_stdio(false);
 
-	uint n;
+	uint n; // Liczba dokumentów
+
 	std::cin >> n;
 
-	DocumentSorter sorter(n);
+	DocumentSorter sorter(n); // Obiekt sortuj¹cy
 
-	sorter.sort();
+	sorter.sort(); // Sortowanie
 
-	std::cout << sorter.result() << std::endl;
+	std::cout << sorter.result() << std::endl; // Wyœwietlenie rezultatu
 
 	return 0;
 }
