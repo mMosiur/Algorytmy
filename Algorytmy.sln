@@ -31,6 +31,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "13 - Rządy", "13 - Rządy\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "14 - Rządy cd", "14 - Rządy cd\14 - Rządy cd.vcxproj", "{60367891-3948-44EE-A686-CA50141A4039}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "15 - RSA", "15 - RSA\15 - RSA.vcxproj", "{0079D2D8-D7E1-413B-B3E5-56167B308DB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -151,6 +153,14 @@ Global
 		{60367891-3948-44EE-A686-CA50141A4039}.Release|x64.Build.0 = Release|x64
 		{60367891-3948-44EE-A686-CA50141A4039}.Release|x86.ActiveCfg = Release|Win32
 		{60367891-3948-44EE-A686-CA50141A4039}.Release|x86.Build.0 = Release|Win32
+		{0079D2D8-D7E1-413B-B3E5-56167B308DB5}.Debug|x64.ActiveCfg = Debug|x64
+		{0079D2D8-D7E1-413B-B3E5-56167B308DB5}.Debug|x64.Build.0 = Debug|x64
+		{0079D2D8-D7E1-413B-B3E5-56167B308DB5}.Debug|x86.ActiveCfg = Debug|Win32
+		{0079D2D8-D7E1-413B-B3E5-56167B308DB5}.Debug|x86.Build.0 = Debug|Win32
+		{0079D2D8-D7E1-413B-B3E5-56167B308DB5}.Release|x64.ActiveCfg = Release|x64
+		{0079D2D8-D7E1-413B-B3E5-56167B308DB5}.Release|x64.Build.0 = Release|x64
+		{0079D2D8-D7E1-413B-B3E5-56167B308DB5}.Release|x86.ActiveCfg = Release|Win32
+		{0079D2D8-D7E1-413B-B3E5-56167B308DB5}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
