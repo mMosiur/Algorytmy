@@ -13,19 +13,21 @@ uint power_modulo(uint num, uint pow, uint mod) {
 
 // Funkcja zwracaj¹ca odwrotnoœæ liczby 'num' modulo 'mod'
 uint inverse(uint num, uint mod) {
-	uint m0 = mod;
-	int y = 0, x = 1;
-	while(num > 1) {
-		uint q = num / m0;
-		long temp = m0;
-		m0 = num % m0;
-		num = temp;
-		temp = y;
-		y = x - q * y;
-		x = temp;
+	int t1 = 1;
+	int t2 = 0;
+	int t3 = 1;
+	while(mod > 1) {
+		uint q = mod / num;
+		uint r = mod % num;
+		t1 = t2;
+		t2 = t3;
+		t3 = t1 - q * t2;
+		// Nastêpne wartoœci mod oraz num
+		mod = num;
+		num = r;
 	}
-	if(x < 0) x += mod;
-	return x;
+	if(t2 < 0) t2 += t3;
+	return t2;
 }
 
 // Klasa rozszyfrowuj¹ca kod
